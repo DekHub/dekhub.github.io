@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>祝我的宝贝生日快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        /* 全局样式 */
+        body {
+            background-color: #FAFAFA;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 1. 引导加载页样式 */
+        .loading-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #FAFAFA;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .cake-loading {
+            width: 120px;
+            height: 100px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .cake-base {
+            width: 100px;
+            height: 40px;
+            background-color: #E8C4C4;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+        }
+
+        .cake-top {
+            width: 80px;
+            height: 30px;
+            background-color: #C89F94;
+            border-radius: 8px;
+            position: absolute;
+            bottom: 35px;
+            left: 20px;
+        }
+
+        .candle {
+            width: 8px;
+            height: 25px;
+            background-color: #FFFFFF;
+            border-radius: 2px;
+            position: absolute;
+            bottom: 60px;
+            left: 56px;
+        }
+
+        .flame {
+            width: 12px;
+            height: 18px;
+            background-color: #FFD700;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            top: -15px;
+            left: -2px;
+            animation: flame-blink 1.5s infinite ease-in-out;
+            opacity: 0;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes flame-blink {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.9);
+                opacity: 0.8;
+            }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: #C89F94;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        /* 2. 主视觉生日页样式 */
+        .main-birthday-page {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #E8C4C4, #FAFAFA);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 32px;
+            color: #FFFFFF;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 3px;
+        }
+
+        .birthday-cake {
+            width: 180px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+
+        .sub-title {
+            font-size: 14px;
+            color: #A65454;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .down-arrow {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #C89F94;
+            border-left: none;
+            border-top: none;
+            transform: rotate(45deg);
+            animation: arrow-blink 2s infinite ease-in-out;
+            cursor: pointer;
+        }
+
+        @keyframes arrow-blink {
+            0% {
+                opacity: 0.6;
+                transform: rotate(45deg) translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: rotate(45deg) translateY(5px);
+            }
+            100% {
+                opacity: 0.6;
+                transform: rotate(45deg) translateY(0);
+            }
+        }
+
+        /* 3. 专属记忆长廊样式 */
+        .memory-gallery {
+            width: 100vw;
+            padding: 60px 20px;
+            background-color: #FAFAFA;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .gallery-title {
+            font-size: 24px;
+            color: #C89F94;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .memory-card {
+            width: 90%;
+            max-width: 400px;
+            background-color: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(232, 196, 196, 0.3);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .memory-img {
+            width: 100%;
+            height: 250px;
+            border-radius: 10px;
+            background-color: #F5E9D6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #C89F94;
+            font-size: 14px;
+            /* 替换为你们的合照：将 url 改为图片地址（可使用 GitHub 仓库图片链接或图床链接） */
+            background-image: url("https://via.placeholder.com/400x250/E8C4C4/FAFAFA?text=我们的合照");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .memory-text {
+            font-size: 15px;
+            color: #666666;
+            text-align: center;
+            line-height: 1.6;
+            letter-spacing: 1px;
+        }
+
+        /* 4. 手写祝福页样式 */
+        .blessing-page {
+            width: 100vw;
+            padding: 60px 20px;
+            background: linear-gradient(to bottom, #FAFAFA, #E8C4C4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .letter {
+            width: 90%;
+            max-width: 450px;
+            background-color: #F5E9D6;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(200, 159, 148, 0.4);
+            padding: 30px 25px;
+            position: relative;
+        }
+
+        .letter-decoration {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background-image: url("https://via.placeholder.com/50x50/C89F94/FAFAFA?text=💖");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .letter-title {
+            font-size: 20px;
+            color: #A65454;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .letter-content {
+            font-size: 15px;
+            color: #333333;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-indent: 2em;
+        }
+
+        .letter-signature {
+            font-size: 16px;
+            color: #A65454;
+            text-align: right;
+            letter-spacing: 1px;
+        }
+
+        /* 5. 收尾互动页样式 */
+        .ending-page {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #E8C4C4, #C89F94);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ending-title {
+            font-size: 28px;
+            color: #FFFFFF;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+        }
+
+        .candle-interactive {
+            width: 150px;
+            height: 120px;
+            margin-bottom: 30px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .interactive-cake {
+            width: 120px;
+            height: 80px;
+            position: absolute;
+            bottom: 0;
+            left: 15px;
+            background: linear-gradient(to top, #E8C4C4, #C89F94);
+            border-radius: 10px;
+        }
+
+        .interactive-candle {
+            width: 10px;
+            height: 30px;
+            background-color: #FFFFFF;
+            border-radius: 2px;
+            position: absolute;
+            bottom: 75px;
+            left: 70px;
+        }
+
+        .interactive-flame {
+            width: 15px;
+            height: 20px;
+            background-color: #FFD700;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            top: -18px;
+            left: -2.5px;
+            animation: flame-blink 1.5s infinite ease-in-out;
+        }
+
+        .ending-tip {
+            font-size: 16px;
+            color: #FFFFFF;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .copyright {
+            position: absolute;
+            bottom: 20px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 1px;
+        }
+
+        /* 隐藏元素样式 */
+        .hidden {
+            display: none;
+        }
+
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 引导加载页 -->
+    <div class="loading-page" id="loadingPage">
+        <div class="cake-loading">
+            <div class="cake-base"></div>
+            <div class="cake-top"></div>
+            <div class="candle"></div>
+            <div class="flame" id="flame"></div>
+        </div>
+        <div class="loading-text">正在为我的女孩加载生日惊喜✨</div>
+    </div>
+
+    <div class="container" id="mainContainer" class="hidden">
+        <!-- 2. 主视觉生日页 -->
+        <div class="main-birthday-page" id="mainBirthdayPage">
+            <h1 class="main-title">祝我的宝贝 XX 生日快乐🎂</h1>
+            <div class="birthday-cake">
+                <img src="https://via.placeholder.com/180x150/E8C4C4/FFFFFF?text=生日蛋糕" alt="生日蛋糕" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+            </div>
+            <p class="sub-title">2025.12.31 农历生日 | 我们一起过的第一个生日</p>
+            <div class="down-arrow" onclick="scrollToNext('memoryGallery')"></div>
+        </div>
+
+        <!-- 3. 专属记忆长廊 -->
+        <div class="memory-gallery" id="memoryGallery">
+            <h2 class="gallery-title">我们的专属回忆 💓</h2>
+            <!-- 记忆卡片1 -->
+            <div class="memory-card">
+                <div class="memory-img"></div>
+                <p class="memory-text">这是我们第一次一起去吃火锅的照片，你辣到皱眉还坚持吃完的样子超可爱😆</p>
+            </div>
+            <!-- 记忆卡片2 -->
+            <div class="memory-card">
+                <div class="memory-img" style="background-image: url('https://via.placeholder.com/400x250/BFD7EA/FAFAFA?text=第一次牵手')"></div>
+                <p class="memory-text">2025年X月X日，我们第一次牵手，心跳快到要蹦出来💓</p>
+            </div>
+            <!-- 记忆卡片3 -->
+            <div class="memory-card">
+                <div class="memory-img" style="background-image: url('https://via.placeholder.com/400x250/F5E9D6/FAFAFA?text=草莓大福')"></div>
+                <p class="memory-text">这是你最爱的草莓大福，希望你的生日每天都甜甜蜜蜜🍓</p>
+            </div>
+        </div>
+
+        <!-- 4. 手写祝福页 -->
+        <div class="blessing-page" id="blessingPage">
+            <div class="letter">
+                <div class="letter-decoration"></div>
+                <h3 class="letter-title">亲爱的 XX：</h3>
+                <p class="letter-content">
+                    这是我陪你过的第一个生日，很庆幸我的青春里有你的出现。过去的一年，有欢笑有甜蜜，每一个和你相处的瞬间，都成为了我生命中最珍贵的回忆。
+                    未来的每一年，我都想陪在你身边，看你笑，陪你闹，陪你走过每一个春夏秋冬。祝你生日快乐，永远开心，永远被爱，永远是我最疼爱的宝贝💖
+                </p>
+                <p class="letter-signature">你的 XX<br>2025.12.31</p>
+            </div>
+        </div>
+
+        <!-- 5. 收尾互动页 -->
+        <div class="ending-page" id="endingPage">
+            <h2 class="ending-title">愿我的女孩，岁岁年年，平安喜乐🎊</h2>
+            <div class="candle-interactive" onclick="blowCandle()">
+                <div class="interactive-cake"></div>
+                <div class="interactive-candle"></div>
+                <div class="interactive-flame" id="interactiveFlame"></div>
+            </div>
+            <p class="ending-tip" id="endingTip">点击蜡烛吹灭我的祝福 🕯️</p>
+            <div class="fireworks" id="fireworks"></div>
+            <p class="copyright">GitHub 专属定制 | 爱你的 XX</p>
+        </div>
+    </div>
+
+    <script>
+        // 加载页逻辑
+        window.onload = function() {
+            // 显示火焰
+            setTimeout(() => {
+                document.getElementById('flame').style.opacity = 1;
+            }, 600);
+            // 3秒后隐藏加载页，显示主内容
+            setTimeout(() => {
+                document.getElementById('loadingPage').classList.add('fade-out');
+                setTimeout(() => {
+                    document.getElementById('mainContainer').classList.remove('hidden');
+                    document.getElementById('loadingPage').style.display = 'none';
+                }, 800);
+            }, 3000);
+        };
+
+        // 滚动到指定模块
+        function scrollToNext(id) {
+            const element = document.getElementById(id);
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 吹蜡烛逻辑
+        function blowCandle() {
+            const flame = document.getElementById('interactiveFlame');
+            const tip = document.getElementById('endingTip');
+            // 隐藏火焰
+            flame.style.opacity = 0;
+            flame.style.animation = 'none';
+            // 修改提示文字
+            tip.innerText = '愿望一定会实现哦 ✨';
+            // 生成简易烟花效果
+            createFireworks();
+        }
+
+        // 烟花效果
+        function createFireworks() {
+            const fireworks = document.getElementById('fireworks');
+            const colors = ['#FFFFFF', '#FFD700', '#E8C4C4', '#C89F94', '#FF69B4'];
+            // 创建10个烟花粒子
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random() * 10 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const top = Math.random() * 80 + 10 + '%';
+                const left = Math.random() * 80 + 10 + '%';
+                const duration = Math.random() * 2 + 1;
+
+                particle.style.position = 'absolute';
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.backgroundColor = color;
+                particle.style.borderRadius = '50%';
+                particle.style.top = top;
+                particle.style.left = left;
+                particle.style.opacity = '0';
+                particle.style.animation = `firework ${duration}s ease-in-out`;
+
+                fireworks.appendChild(particle);
+
+                // 触发动画
+                setTimeout(() => {
+                    particle.style.opacity = '1';
+                }, 100);
+
+                // 移除粒子
+                setTimeout(() => {
+                    particle.remove();
+                }, duration * 1000);
+            }
+
+            // 添加烟花动画
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes firework {
+                    0% {
+                        transform: scale(0);
+                        opacity: 1;
+                    }
+                    50% {
+                        transform: scale(1.2);
+                        opacity: 0.8;
+                    }
+                    100% {
+                        transform: scale(0);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>
